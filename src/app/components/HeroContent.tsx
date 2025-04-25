@@ -20,7 +20,7 @@ export default function HeroContent() {
 
                 <button
                     title='modal'
-                    className="bg-primary cursor-pointer text-white px-8 py-4 rounded-lg text-lg font-semibold flex items-center gap-2 mx-auto hover:bg-secondary transition-all"
+                    className="bg-primary cursor-pointer motion-preset-pulse motion-duration-1000 text-white px-8 py-4 rounded-lg text-lg font-semibold flex items-center gap-2 mx-auto hover:bg-secondary transition-all"
                     onClick={() => setIsModalOpen(true)}
                 >
                     Obtén Asesoría Gratis

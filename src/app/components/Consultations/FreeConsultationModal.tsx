@@ -3,6 +3,7 @@
 import { FiX, FiSend } from 'react-icons/fi';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
+import Link from 'next/link';
 
 interface FreeConsultationModalProps {
     isOpen: boolean;
@@ -22,12 +23,6 @@ const CASE_STATUS_OPTIONS = [
     'Concluido',
 ];
 
-const BUDGET_OPTIONS = [
-    'Menos de $1,000',
-    '$1,000 - $5,000',
-    'Más de $5,000',
-];
-
 const URGENCY_OPTIONS = [
     'Baja',
     'Media',
@@ -40,21 +35,21 @@ export default function FreeConsultationModal({
     onClose,
 }: FreeConsultationModalProps) {
     const [formData, setFormData] = useState({
-        nombre: '',
+        name: '',
         email: '',
-        servicio: service || SERVICE_OPTIONS[0],
-        estadoCaso: CASE_STATUS_OPTIONS[0],
-        presupuesto: BUDGET_OPTIONS[0],
-        urgencia: URGENCY_OPTIONS[1],
-        descripcion: '',
+        service: service || SERVICE_OPTIONS[0],
+        statusCase: CASE_STATUS_OPTIONS[0],
+        urgency: URGENCY_OPTIONS[1],
+        description: '',
+        acceptPolicy: false,
     });
 
     const maxChars = 200;
-    const charsLeft = maxChars - formData.descripcion.length;
+    const charsLeft = maxChars - formData.description.length;
 
     const handleChange = (
         field: keyof typeof formData,
-        value: string
+        value: string | boolean
     ) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
@@ -62,19 +57,22 @@ export default function FreeConsultationModal({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!formData.nombre || !formData.email) {
-            alert('Por favor, complete los campos Nombre y Email.');
+        if (!formData.acceptPolicy) {
+            alert('Por favor, acepte la política de privacidad para continuar.');
             return;
         }
 
-        const message = `Hola, soy ${formData.nombre} de correo ${formData.email}.
+        if (!formData.name || !formData.email) {
+            alert('Por favor, complete los campos name y Email.');
+            return;
+        }
 
-Necesito asesoría en el servicio de ${formData.servicio}.
-Tengo una urgencia ${formData.urgencia}.
-Presupuesto: ${formData.presupuesto}.
-
+        const message = `Hola, soy ${formData.name} de correo ${formData.email}.
+El caso esta en estado ${formData.statusCase}.
+Necesito asesoría en el servicio de ${formData.service}.
+Tengo una urgencia ${formData.urgency}.
 Descripción de mi caso:
-${formData.descripcion}`;
+${formData.description}`;
 
         const url = `https://wa.me/525514083982?text=${encodeURIComponent(
             message
@@ -93,18 +91,18 @@ ${formData.descripcion}`;
         >
             <div
                 onClick={e => e.stopPropagation()}
-                className="bg-white rounded-xl w-full max-w-lg p-6 relative overflow-y-auto max-h-[90vh]"
+                className="bg-gradient-to-br from-white to-blue-50 rounded-xl w-full max-w-lg p-6 relative overflow-y-auto max-h-[90vh] shadow-xl"
             >
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-gray-500 hover:text-primary"
+                    className="absolute top-4 right-4 text-gray-500 hover:text-primary transition-colors"
                     title="Cerrar"
                 >
                     <FiX size={24} />
                 </button>
 
                 <h2 className="text-2xl font-bold text-primary mb-4">
-                    Agenda tu consulta gratuita
+                    Agenda tu asesoría gratuita
                 </h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -114,9 +112,9 @@ ${formData.descripcion}`;
                             type="text"
                             required
                             placeholder="Ej: Juan Pérez"
-                            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary"
-                            value={formData.nombre}
-                            onChange={e => handleChange('nombre', e.target.value)}
+                            className="w-full pl-4 pr-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            value={formData.name}
+                            onChange={e => handleChange('name', e.target.value)}
                         />
                     </div>
 
@@ -126,7 +124,7 @@ ${formData.descripcion}`;
                             type="email"
                             required
                             placeholder="ejemplo@correo.com"
-                            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary"
+                            className="w-full pl-4 pr-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                             value={formData.email}
                             onChange={e => handleChange('email', e.target.value)}
                         />
@@ -138,9 +136,9 @@ ${formData.descripcion}`;
                             <select
                                 required
                                 title="Seleccione un servicio"
-                                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary"
-                                value={formData.servicio}
-                                onChange={e => handleChange('servicio', e.target.value)}
+                                className="w-full pl-4 pr-4 py-3 border cursor-pointer border-gray-400 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                value={formData.service}
+                                onChange={e => handleChange('service', e.target.value)}
                             >
                                 {SERVICE_OPTIONS.map(opt => (
                                     <option key={opt} value={opt}>
@@ -154,27 +152,11 @@ ${formData.descripcion}`;
                             <label className="block text-gray-700 mb-1">Estado del caso</label>
                             <select
                                 title="Seleccione el estado del caso"
-                                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary"
-                                value={formData.estadoCaso}
-                                onChange={e => handleChange('estadoCaso', e.target.value)}
+                                className="w-full pl-3 pr-4 py-3 border border-gray-400 rounded-lg cursor-pointer focus:ring-2 focus:ring-primary focus:border-transparent"
+                                value={formData.statusCase}
+                                onChange={e => handleChange('statusCase', e.target.value)}
                             >
                                 {CASE_STATUS_OPTIONS.map(opt => (
-                                    <option key={opt} value={opt}>
-                                        {opt}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="block text-gray-700 mb-1">Presupuesto</label>
-                            <select
-                                title="Seleccione un presupuesto"
-                                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary"
-                                value={formData.presupuesto}
-                                onChange={e => handleChange('presupuesto', e.target.value)}
-                            >
-                                {BUDGET_OPTIONS.map(opt => (
                                     <option key={opt} value={opt}>
                                         {opt}
                                     </option>
@@ -186,9 +168,9 @@ ${formData.descripcion}`;
                             <label className="block text-gray-700 mb-1">Urgencia</label>
                             <select
                                 title="Seleccione el nivel de urgencia"
-                                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary"
-                                value={formData.urgencia}
-                                onChange={e => handleChange('urgencia', e.target.value)}
+                                className="w-full pl-3 pr-4 py-3 border border-gray-400 rounded-lg cursor-pointer focus:ring-2 focus:ring-primary focus:border-transparent"
+                                value={formData.urgency}
+                                onChange={e => handleChange('urgency', e.target.value)}
                             >
                                 {URGENCY_OPTIONS.map(opt => (
                                     <option key={opt} value={opt}>
@@ -200,25 +182,55 @@ ${formData.descripcion}`;
                     </div>
 
                     <div>
-                        <label className="block text-gray-700 mb-1">
-                            Describe tu caso ({charsLeft} caracteres restantes)
+                        <label className="block text-gray-800 mb-1">
+                            Describe tu caso
+                            <span className={`text-sm ml-2 ${charsLeft < 20 ? 'text-red-500' : 'text-gray-500'}`}>
+                                ({charsLeft} caracteres restantes)
+                            </span>
                         </label>
                         <textarea
                             required
                             maxLength={maxChars}
                             placeholder="Breve descripción (máx. 200 caracteres)"
-                            className="w-full p-2 border rounded-lg resize-none h-24 focus:ring-2 focus:ring-primary"
-                            value={formData.descripcion}
-                            onChange={e => handleChange('descripcion', e.target.value)}
+                            className="w-full p-3 border border-gray-400 rounded-lg resize-none h-32 focus:ring-2 focus:ring-primary focus:border-transparent"
+                            value={formData.description}
+                            onChange={e => handleChange('description', e.target.value)}
                         />
+                    </div>
+
+                    <div className="flex items-start mt-4">
+                        <div className="flex items-center h-5">
+                            <input
+                                id="privacy-policy"
+                                type="checkbox"
+                                required
+                                checked={formData.acceptPolicy}
+                                onChange={e => handleChange('acceptPolicy', e.target.checked)}
+                                className="w-4 h-4 border border-gray-300 rounded bg-white focus:ring-primary"
+                            />
+                        </div>
+                        <label
+                            htmlFor="privacy-policy"
+                            className="ml-3 text-sm text-gray-600"
+                        >
+                            Acepto las{' '}
+                            <Link
+                                href="https://lopezigayasociados.com.mx/privacy-policy"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary hover:underline"
+                            >
+                                Políticas de privacidad
+                            </Link>
+                        </label>
                     </div>
 
                     <button
                         type="submit"
-                        className="w-full bg-primary hover:bg-secondary text-white font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2"
+                        className="w-full bg-gradient-to-r cursor-pointer from-primary to-secondary hover:opacity-90 text-white font-semibold py-4 rounded-lg transition-all flex items-center justify-center gap-2 mt-6"
                     >
-                        Enviar solicitud
                         <FiSend size={20} />
+                        Obtener Asesoría Gratis
                     </button>
                 </form>
             </div>
