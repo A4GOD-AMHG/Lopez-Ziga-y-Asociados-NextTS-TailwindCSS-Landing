@@ -1,23 +1,68 @@
 import { ServicesSection, LegalTeamSection, StatsSection, TestimonialsSection } from '@/app/components/Sections'
-import HeroContent from '@/app/components/HeroContent'
+// import HeroContent from '@/app/components/HeroContent'
 import Image from 'next/image';
+import { HeroCarousel } from './components/Carousels';
+
+const slides = [
+    {
+        title: "Asesorías Legales de Vanguardia",
+        description: "Recibe asesoramiento jurídico personalizado y efectivo, con más de 20 años de experiencia en derecho público y privado.",
+        ctaText: "Obtén Asesoría Gratis",
+        bgImage: "/images/law-bg1.avif",
+    },
+    {
+        title: "Gestión de Sucesiones y Herencias",
+        description: "Asesoría especializada en testamentos, sucesiones intestadas y división de bienes familiares.",
+        ctaText: "Obtén Asesoría Gratis",
+        bgImage: "/images/law-bg2.avif",
+    },
+    {
+        title: "Familias, acuerdos de guardia y convivencia",
+        description: "Defensa especializada en convenios de guardia y custodia, patria potestad, así como régimen de visitas.",
+        ctaText: "Obtén Asesoría Gratis",
+        bgImage: "/images/law-bg3.avif",
+    }
+]
 
 export default async function HomePage() {
     return (
         <main className="relative">
-            <section className="relative h-[50vh] mt-12 sm:mt-24 sm:h-[70vh] flex items-center justify-center overflow-hidden">
-                <Image
-                    alt='bg'
-                    placeholder='blur'
-                    src="/images/law-bg.avif"
-                    priority
-                    blurDataURL='/images/law-bg.avif'
-                    fill
-                />
-                <div className="parallax-overlay" />
-                <div className="container mx-auto px-4 relative z-10">
-                    <HeroContent />
+            <section className="relative h-[55vh] mt-8 sm:mt-16 sm:h-[80vh] flex items-center justify-center overflow-hidden">
+                <div id="carousel-viewport" className="overflow-hidden h-full w-full">
+                    <div className="flex h-full">
+                        {slides.map((slide, idx) => (
+                            <div
+                                className="relative flex-0 min-w-full w-full h-full"
+                                key={idx}
+                            >
+                                <Image
+                                    src={slide.bgImage}
+                                    alt={slide.title}
+                                    fill
+                                    placeholder={idx === 0 ? 'blur' : 'empty'}
+                                    blurDataURL={idx === 0 ? slide.bgImage : undefined}
+                                    priority={idx === 0}
+                                    className="object-bottom"
+                                />
+                                <div className="absolute inset-0 bg-black/60" />
+                                <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center px-4 text-white">
+                                    <h1 className="text-3xl md:text-6xl font-bold drop-shadow-xl">
+                                        {slide.title}
+                                    </h1>
+                                    <p className="text-xl md:text-2xl my-8 font-medium leading-relaxed max-w-2xl mx-auto drop-shadow-md">
+                                        {slide.description}
+                                    </p>
+                                    <button className="cta-button bg-[#70ac60] cursor-pointer hover:bg-[#90c67b] motion-scale-loop-[0.95] motion-duration-[1500ms] motion-ease-in-out text-white font-bold py-4 px-12 text-xl rounded-lg shadow-lg">
+                                        {slide.ctaText}
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
+                <HeroCarousel
+                    containerId='carousel-viewport'
+                />
 
             </section>
             <ServicesSection />

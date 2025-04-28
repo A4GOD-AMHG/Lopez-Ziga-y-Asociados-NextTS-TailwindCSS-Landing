@@ -6,7 +6,7 @@ export default async function Header() {
         <header id="header" className="fixed w-full bg-gray-100 shadow-sm top-0 z-20">
             <div className="container px-3 mx-auto py-0 flex justify-between items-center">
                 <div className="w-40 md:w-48 lg:w-52">
-                    <div className="w-40 md:w-48 lg:w-52">
+                    <div className="w-32 md:w-40 lg:w-44">
                         <Logo />
                     </div>
                 </div>

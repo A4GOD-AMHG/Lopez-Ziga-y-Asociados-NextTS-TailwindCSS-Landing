@@ -27,7 +27,7 @@ export default function HeroCarousel({ containerId }: HeroCarrouselProps) {
             embla = EmblaCarousel(
                 viewport,
                 { loop: true, skipSnaps: false, containScroll: 'trimSnaps' },
-                [Autoplay({ delay: 5000, stopOnInteraction: false, playOnInit: true })]
+                [Autoplay({ delay: 8000, stopOnInteraction: false, playOnInit: true })]
             );
 
             setEmblaApi(embla);

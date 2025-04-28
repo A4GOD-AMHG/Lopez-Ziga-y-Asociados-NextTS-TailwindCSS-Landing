@@ -6,19 +6,19 @@ const services = [
         title: 'Derecho Penal',
         icon: <FiBriefcase className="text-7xl text-primary mb-6" />,
         description: 'Defensa legal especializada en delitos económicos y financieros',
-        href: '/derecho-penal'
+        href: 'https://lopezzigayasociados.com.mx/derecho-penal'
     },
     {
         title: 'Derecho Inmobiliario',
         icon: <FiHome className="text-7xl text-primary mb-6" />,
         description: 'Asesoría en transacciones y litigios de bienes raíces',
-        href: '/derecho-inmobiliario'
+        href: 'https://lopezzigayasociados.com.mx/derecho-inmobiliario'
     },
     {
         title: 'Derecho Familiar',
         icon: <FiUsers className="text-7xl text-primary mb-6" />,
         description: 'Gestión de conflictos familiares y auditorías legales',
-        href: '/derecho-familiar'
+        href: 'https://lopezzigayasociados.com.mx/derecho-familiar'
     }
 ]
 
