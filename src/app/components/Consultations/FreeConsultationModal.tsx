@@ -215,7 +215,7 @@ ${formData.description}`;
                         >
                             Acepto las{' '}
                             <Link
-                                href="https://lopezigayasociados.com.mx/privacy-policy"
+                                href="https://lopezzigayasociados.com.mx/politicas-de-privacidad"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-primary hover:underline"
