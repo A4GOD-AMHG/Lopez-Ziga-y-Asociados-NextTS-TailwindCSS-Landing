@@ -1,5 +1,6 @@
 'use client'
 
+import ReactFacebookPixel from 'react-facebook-pixel';
 import { FiX, FiSend } from 'react-icons/fi';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -67,6 +68,17 @@ export default function FreeConsultationModal({
             return;
         }
 
+
+        ReactFacebookPixel.track('Lead', {
+            content_category: 'Asesoría Legal Gratis',
+            service: formData.service,
+            urgency: formData.urgency,
+            email: formData.email,
+            name: formData.name
+
+            // TODO: Hashear info sensible 
+        })
+
         const message = `Hola, soy ${formData.name} de correo ${formData.email}.
 El caso esta en estado ${formData.statusCase}.
 Necesito asesoría en el servicio de ${formData.service}.
@@ -112,7 +124,7 @@ ${formData.description}`;
                             type="text"
                             required
                             placeholder="Ej: Juan Pérez"
-                            className="w-full pl-4 pr-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            className="w-full pl-4 pr-4 py-3 border border-gray-400 bg-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                             value={formData.name}
                             onChange={e => handleChange('name', e.target.value)}
                         />
@@ -124,7 +136,7 @@ ${formData.description}`;
                             type="email"
                             required
                             placeholder="ejemplo@correo.com"
-                            className="w-full pl-4 pr-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            className="w-full pl-4 pr-4 py-3 border border-gray-400 bg-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                             value={formData.email}
                             onChange={e => handleChange('email', e.target.value)}
                         />
@@ -136,7 +148,7 @@ ${formData.description}`;
                             <select
                                 required
                                 title="Seleccione un servicio"
-                                className="w-full pl-4 pr-4 py-3 border cursor-pointer border-gray-400 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                className="w-full pl-4 pr-4 py-3 border cursor-pointer border-gray-400 bg-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                                 value={formData.service}
                                 onChange={e => handleChange('service', e.target.value)}
                             >
@@ -152,7 +164,7 @@ ${formData.description}`;
                             <label className="block text-gray-700 mb-1">Estado del caso</label>
                             <select
                                 title="Seleccione el estado del caso"
-                                className="w-full pl-3 pr-4 py-3 border border-gray-400 rounded-lg cursor-pointer focus:ring-2 focus:ring-primary focus:border-transparent"
+                                className="w-full pl-3 pr-4 py-3 border border-gray-400 rounded-lg cursor-pointer bg-white focus:ring-2 focus:ring-primary focus:border-transparent"
                                 value={formData.statusCase}
                                 onChange={e => handleChange('statusCase', e.target.value)}
                             >
@@ -168,7 +180,7 @@ ${formData.description}`;
                             <label className="block text-gray-700 mb-1">Urgencia</label>
                             <select
                                 title="Seleccione el nivel de urgencia"
-                                className="w-full pl-3 pr-4 py-3 border border-gray-400 rounded-lg cursor-pointer focus:ring-2 focus:ring-primary focus:border-transparent"
+                                className="w-full pl-3 pr-4 py-3 border border-gray-400 rounded-lg cursor-pointer bg-white focus:ring-2 focus:ring-primary focus:border-transparent"
                                 value={formData.urgency}
                                 onChange={e => handleChange('urgency', e.target.value)}
                             >
@@ -192,7 +204,7 @@ ${formData.description}`;
                             required
                             maxLength={maxChars}
                             placeholder="Breve descripción (máx. 200 caracteres)"
-                            className="w-full p-3 border border-gray-400 rounded-lg resize-none h-32 focus:ring-2 focus:ring-primary focus:border-transparent"
+                            className="w-full p-3 border border-gray-400 rounded-lg resize-none h-32 bg-white focus:ring-2 focus:ring-primary focus:border-transparent"
                             value={formData.description}
                             onChange={e => handleChange('description', e.target.value)}
                         />

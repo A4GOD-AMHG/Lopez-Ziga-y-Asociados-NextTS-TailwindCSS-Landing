@@ -3,6 +3,7 @@
 import { addToNewsletter } from "@/app/actions";
 import { useState } from "react";
 import { FiCheckCircle, FiSend, FiX, FiXCircle } from "react-icons/fi";
+import ReactFacebookPixel from 'react-facebook-pixel';
 
 export default function NewsLetter() {
     const [email, setEmail] = useState<string>("");
@@ -14,15 +15,13 @@ export default function NewsLetter() {
         message: ''
     });
 
-    const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        if (!validateEmail(email)) {
-            setIsValidEmail(false)
-            return
-        }
+        ReactFacebookPixel.track('Lead', {
+            content_category: 'Newsletter',
+            email: email,
+        })
 
         setIsSubmitting(true)
 
@@ -68,8 +67,8 @@ export default function NewsLetter() {
                         placeholder="Ingresa tu correo electrónico"
                         value={email}
                         onChange={(e) => {
-                            setEmail(e.target.value);
-                            setIsValidEmail(true);
+                            setEmail(e.target.value)
+                            setIsValidEmail(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value))
                         }}
                         className={`flex-grow relative px-6 w-full placeholder:text-gray-600 md:w-auto py-3 rounded-lg border bg-white focus:outline-none 
                                     ${isValidEmail ? "focus:ring-secondary" : "border-red-500 focus:ring-red-500"
