@@ -1,10 +1,18 @@
 'use client'
 
-import ReactFacebookPixel from 'react-facebook-pixel';
 import { FiX, FiSend } from 'react-icons/fi';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+import sha256 from 'crypto-js/sha256';
+
+declare global {
+    interface Window {
+        fbq?: {
+            track: (eventName: string, parameters?: Record<string, unknown>) => void;
+        };
+    }
+}
 
 interface FreeConsultationModalProps {
     isOpen: boolean;
@@ -55,7 +63,7 @@ export default function FreeConsultationModal({
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!formData.acceptPolicy) {
@@ -68,16 +76,17 @@ export default function FreeConsultationModal({
             return;
         }
 
+        const hashedEmail = await sha256(formData.email.toLowerCase()).toString();
 
-        ReactFacebookPixel.track('Lead', {
-            content_category: 'Asesoría Legal Gratis',
-            service: formData.service,
-            urgency: formData.urgency,
-            email: formData.email,
-            name: formData.name
 
-            // TODO: Hashear info sensible 
-        })
+        if (typeof window !== 'undefined' && window.fbq) {
+            window.fbq.track('Lead', {
+                content_category: 'Asesoría Legal Gratis',
+                content_name: formData.service,
+                urgency_level: formData.urgency,
+                em: hashedEmail
+            });
+        }
 
         const message = `Hola, soy ${formData.name} de correo ${formData.email}.
 El caso esta en estado ${formData.statusCase}.
