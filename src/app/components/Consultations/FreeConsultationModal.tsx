@@ -78,14 +78,15 @@ export default function FreeConsultationModal({
 
         const hashedEmail = await sha256(formData.email.toLowerCase()).toString();
 
-
         if (typeof window !== 'undefined' && window.fbq) {
-            window.fbq.track('Lead', {
-                content_category: 'Asesoría Legal Gratis',
-                content_name: formData.service,
-                urgency_level: formData.urgency,
-                em: hashedEmail
-            });
+            if (typeof window.fbq.track === 'function') {
+                window.fbq.track('Lead', {
+                    content_category: 'Asesoría Legal Gratis',
+                    content_name: formData.service,
+                    urgency_level: formData.urgency,
+                    em: hashedEmail
+                });
+            }
         }
 
         const message = `Hola, soy ${formData.name} de correo ${formData.email}.

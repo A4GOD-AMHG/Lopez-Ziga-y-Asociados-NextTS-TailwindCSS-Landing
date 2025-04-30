@@ -3,6 +3,7 @@
 import React, { ReactElement } from 'react';
 
 export default function WhatsAppButton({ children }: { children: React.ReactNode }) {
+
     const handleClick = () => {
         if (typeof window !== 'undefined' && window.fbq) {
             window.fbq.track('Contact', {
