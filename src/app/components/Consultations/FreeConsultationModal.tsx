@@ -4,15 +4,7 @@ import { FiX, FiSend } from 'react-icons/fi';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import sha256 from 'crypto-js/sha256';
-
-declare global {
-    interface Window {
-        fbq?: {
-            track: (eventName: string, parameters?: Record<string, unknown>) => void;
-        };
-    }
-}
+// import sha256 from 'crypto-js/sha256';
 
 interface FreeConsultationModalProps {
     isOpen: boolean;
@@ -76,18 +68,9 @@ export default function FreeConsultationModal({
             return;
         }
 
-        const hashedEmail = await sha256(formData.email.toLowerCase()).toString();
+        // const hashedEmail = await sha256(formData.email.toLowerCase()).toString();
 
-        if (typeof window !== 'undefined' && window.fbq) {
-            if (typeof window.fbq.track === 'function') {
-                window.fbq.track('Lead', {
-                    content_category: 'Asesoría Legal Gratis',
-                    content_name: formData.service,
-                    urgency_level: formData.urgency,
-                    em: hashedEmail
-                });
-            }
-        }
+
 
         const message = `Hola, soy ${formData.name} de correo ${formData.email}.
 El caso esta en estado ${formData.statusCase}.

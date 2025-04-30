@@ -2,6 +2,7 @@
 
 import React from 'react';
 import sha256 from 'crypto-js/sha256';
+import { fbq } from 'react-facebook-pixel';
 
 export default function LeadTracker({
     children,
@@ -13,19 +14,17 @@ export default function LeadTracker({
     email?: string
 }) {
     const handleTrack = async () => {
-        if (typeof window !== 'undefined' && window.fbq) {
-            const params: Record<string, unknown> = {
-                content_category: type === 'newsletter'
-                    ? 'Newsletter Subscription'
-                    : 'Free Consultation'
-            };
+        const params: Record<string, unknown> = {
+            content_category: type === 'newsletter'
+                ? 'Newsletter Subscription'
+                : 'Free Consultation'
+        };
 
-            if (email) {
-                params.em = await sha256(email.toLowerCase()).toString();
-            }
-
-            window.fbq.track('Lead', params);
+        if (email) {
+            params.em = await sha256(email.toLowerCase()).toString();
         }
+
+        fbq('track', 'Lead', params);
     };
 
     return React.Children.map(children, child => {

@@ -4,8 +4,7 @@ import { addToNewsletter } from "@/app/actions";
 import { useState } from "react";
 import { FiCheckCircle, FiSend, FiX, FiXCircle } from "react-icons/fi";
 import { LeadTracker } from "../CTAButtons";
-import sha256 from 'crypto-js/sha256';
-
+// import sha256 from 'crypto-js/sha256';
 
 export default function NewsLetter() {
     const [email, setEmail] = useState<string>("");
@@ -25,14 +24,14 @@ export default function NewsLetter() {
         const result = await addToNewsletter(email)
 
 
-        const hashedEmail = await sha256(email.toLowerCase()).toString();
+        // const hashedEmail = await sha256(email.toLowerCase()).toString();
 
-        if (typeof window !== 'undefined' && window.fbq) {
-            window.fbq.track('Lead', {
-                content_category: 'Newsletter',
-                em: hashedEmail
-            });
-        }
+        // if (typeof window !== 'undefined' && window.fbq) {
+        //     window.fbq('track', 'Lead', {
+        //         content_category: 'Newsletter',
+        //         em: hashedEmail
+        //     });
+        // }
 
         if (result.success) {
             setEmail("")

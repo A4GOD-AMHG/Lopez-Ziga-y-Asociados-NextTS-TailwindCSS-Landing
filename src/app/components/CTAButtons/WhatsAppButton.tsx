@@ -1,16 +1,17 @@
+
 'use client';
 
 import React, { ReactElement } from 'react';
 
 export default function WhatsAppButton({ children }: { children: React.ReactNode }) {
-
-    const handleClick = () => {
-        if (typeof window !== 'undefined' && window.fbq) {
-            window.fbq.track('Contact', {
-                method: 'WhatsApp',
-            });
-        }
-    };
+    // const handleClick = () => {
+    //     if (typeof window !== 'undefined' && window.fbq) {
+    //         window.fbq('track', 'Contact', {
+    //             method: 'WhatsApp',
+    //             content_name: 'Header WhatsApp CTA'
+    //         });
+    //     }
+    // };
 
     return React.Children.map(children, child => {
         if (React.isValidElement(child)) {
@@ -19,7 +20,7 @@ export default function WhatsAppButton({ children }: { children: React.ReactNode
             return React.cloneElement(element, {
                 ...element.props,
                 onClick: (e: React.MouseEvent<HTMLElement>) => {
-                    handleClick();
+                    // handleClick();
                     element.props.onClick?.(e);
                 }
             });
