@@ -65,7 +65,7 @@ export default function NewsLetter() {
                             setIsValidEmail(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value))
                         }}
                         className={`flex-grow relative px-6 w-full placeholder:text-gray-600 md:w-auto py-3 rounded-lg border bg-white focus:outline-none 
-                                    ${isValidEmail ? "focus:ring-secondary" : "border-red-500 focus:ring-red-500"
+                                    ${!isValidEmail && email.length > 0 ? "border-red-500 focus:ring-red-500" : "focus:ring-secondary"
                             }`}
                     />
                     <button
@@ -77,7 +77,7 @@ export default function NewsLetter() {
                         {isSubmitting ? "Enviando..." : "Suscribirse ahora"}
                     </button>
                 </form>
-                {!isValidEmail && (
+                {!isValidEmail && email.length > 0 && (
                     <p className="text-red-500 absolute text-sm mt-2">Por favor ingresa un correo electrónico válido</p>
                 )}
             </div>
