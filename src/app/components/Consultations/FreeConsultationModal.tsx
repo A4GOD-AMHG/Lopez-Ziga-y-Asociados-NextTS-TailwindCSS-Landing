@@ -120,7 +120,7 @@ ${formData.description}`;
             >
                 <div
                     onClick={e => e.stopPropagation()}
-                    className="bg-gradient-to-br from-white to-blue-50 rounded-xl w-full max-w-lg p-6 relative overflow-y-auto max-h-[90vh] shadow-xl"
+                    className="bg-gradient-to-br bg-white rounded-xl w-full max-w-lg p-6 relative overflow-y-auto max-h-[90vh] shadow-xl"
                 >
                     <button
                         onClick={onClose}

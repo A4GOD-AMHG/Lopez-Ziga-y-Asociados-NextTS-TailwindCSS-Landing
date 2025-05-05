@@ -5,7 +5,7 @@ import Image from "next/image";
 import { PhoneButton, WhatsAppButton } from "../CTAButtons";
 export default function Header() {
     return (
-        <header id="header" className="fixed w-full bg-gray-100 shadow-sm top-0 z-20">
+        <header id="header" className="fixed w-full  bg-gray-100 bg-opacity-100 backdrop-blur-sm shadow-sm top-0 z-20">
             <div className="container px-3 mx-auto py-0 flex justify-between items-center">
                 <div className="w-36 md:w-44 lg:w-48">
                     <Link href="/">
