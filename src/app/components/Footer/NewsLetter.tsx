@@ -3,12 +3,10 @@
 import { addToNewsletter } from "@/app/actions";
 import { useState } from "react";
 import { FiCheckCircle, FiSend, FiX, FiXCircle } from "react-icons/fi";
-import { LeadTracker } from "../CTAButtons";
-// import sha256 from 'crypto-js/sha256';
 
 export default function NewsLetter() {
     const [email, setEmail] = useState<string>("");
-    const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
+    const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [modal, setModal] = useState<{ show: boolean; type: 'success' | 'error'; message: string }>({
         show: false,
@@ -22,16 +20,6 @@ export default function NewsLetter() {
         setIsSubmitting(true)
 
         const result = await addToNewsletter(email)
-
-
-        // const hashedEmail = await sha256(email.toLowerCase()).toString();
-
-        // if (typeof window !== 'undefined' && window.fbq) {
-        //     window.fbq('track', 'Lead', {
-        //         content_category: 'Newsletter',
-        //         em: hashedEmail
-        //     });
-        // }
 
         if (result.success) {
             setEmail("")
@@ -67,30 +55,28 @@ export default function NewsLetter() {
                 <h3 className="text-2xl sm:text-3xl font-semibold mb-6 text-primary">
                     Suscríbete a nuestro boletín legal
                 </h3>
-                <LeadTracker type="newsletter">
-                    <form onSubmit={handleSubmit} className="flex flex-row portrait:flex-col items-center gap-4">
-                        <input
-                            type="email"
-                            placeholder="Ingresa tu correo electrónico"
-                            value={email}
-                            onChange={(e) => {
-                                setEmail(e.target.value)
-                                setIsValidEmail(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value))
-                            }}
-                            className={`flex-grow relative px-6 w-full placeholder:text-gray-600 md:w-auto py-3 rounded-lg border bg-white focus:outline-none 
+                <form onSubmit={handleSubmit} className="flex flex-row portrait:flex-col items-center gap-4">
+                    <input
+                        type="email"
+                        placeholder="Ingresa tu correo electrónico"
+                        value={email}
+                        onChange={(e) => {
+                            setEmail(e.target.value)
+                            setIsValidEmail(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value))
+                        }}
+                        className={`flex-grow relative px-6 w-full placeholder:text-gray-600 md:w-auto py-3 rounded-lg border bg-white focus:outline-none 
                                     ${isValidEmail ? "focus:ring-secondary" : "border-red-500 focus:ring-red-500"
-                                }`}
-                        />
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="bg-primary cursor-pointer w-52 hover:bg-secondary text-white px-4 py-3 rounded-lg flex items-center justify-center gap-2 transition-colors font-medium disabled:opacity-70"
-                        >
-                            <FiSend className="text-xl" />
-                            {isSubmitting ? "Enviando..." : "Suscribirse ahora"}
-                        </button>
-                    </form>
-                </LeadTracker>
+                            }`}
+                    />
+                    <button
+                        type="submit"
+                        disabled={isSubmitting || !isValidEmail}
+                        className="bg-primary cursor-pointer w-52 hover:bg-secondary text-white px-4 py-3 rounded-lg flex items-center justify-center gap-2 transition-colors font-medium disabled:opacity-70"
+                    >
+                        <FiSend className="text-xl" />
+                        {isSubmitting ? "Enviando..." : "Suscribirse ahora"}
+                    </button>
+                </form>
                 {!isValidEmail && (
                     <p className="text-red-500 absolute text-sm mt-2">Por favor ingresa un correo electrónico válido</p>
                 )}

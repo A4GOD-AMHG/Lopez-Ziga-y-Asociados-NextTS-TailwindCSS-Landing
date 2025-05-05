@@ -5,7 +5,7 @@ import { useState } from 'react';
 import FreeConsultationModal from './Consultations/FreeConsultationModal';
 
 export default function HeroContent() {
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <>

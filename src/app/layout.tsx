@@ -71,7 +71,46 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`flex flex-col min-h-screen bg-gray-50 overflow-y-scroll scrollbar-hide scroll-smooth`}>
+        <Header />
+        {children}
+        <ScrollToTop />
+        <Footer />
         <Script
+          id="fb-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s){
+                if(f.fbq)return;n=f.fbq=function(){n.callMethod ?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                
+                fbq('init', '1068142238466336');
+                fbq('track', 'Visita a la Landing');
+                
+                window.fbq = window.fbq || function(...args) {
+                  (window.fbq.queue = window.fbq.queue || []).push(args);
+                };
+            `
+          }}
+        />
+
+        {/* Noscript fallback */}
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=1068142238466336&ev=PageView&noscript=1"
+            alt="Facebook Pixel Tracker"
+          />
+        </noscript>
+
+        {/* <Script
           id="fb-pixel"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -92,12 +131,24 @@ export default function RootLayout({
                   (window.fbq.queue = window.fbq.queue || []).push(args);
                 };
             `,
-          }}
-        />
-        <Header />
-        {children}
-        <ScrollToTop />
-        <Footer />
+          }} */}
+
+        {/* <script>
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '1068142238466336');
+          fbq('track', 'PageView');
+        </script>
+
+        <noscript><img height="1" width="1" style="display:none"
+          src="https://www.facebook.com/tr?id=1068142238466336&ev=PageView&noscript=1"
+        /></noscript> */}
       </body>
     </html>
   )
