@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import sha256 from 'crypto-js/sha256';
-import { fbq } from 'react-facebook-pixel';
 
 export default function LeadTracker({
     children,
@@ -13,7 +12,18 @@ export default function LeadTracker({
     type?: 'newsletter' | 'consultation' | 'general',
     email?: string
 }) {
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            import('react-facebook-pixel').then((ReactPixel) => {
+                ReactPixel.default.init('1068142238466336');
+            });
+        }
+    }, []);
+
     const handleTrack = async () => {
+        if (typeof window === 'undefined') return;
+
+        const ReactPixel = await import('react-facebook-pixel');
         const params: Record<string, unknown> = {
             content_category: type === 'newsletter'
                 ? 'Newsletter Subscription'
@@ -24,7 +34,7 @@ export default function LeadTracker({
             params.em = await sha256(email.toLowerCase()).toString();
         }
 
-        fbq('track', 'Lead', params);
+        ReactPixel.default.track('Lead', params);
     };
 
     return React.Children.map(children, child => {

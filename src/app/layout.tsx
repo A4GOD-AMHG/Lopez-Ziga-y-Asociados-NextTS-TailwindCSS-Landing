@@ -85,8 +85,8 @@ export default function RootLayout({
                 s.parentNode.insertBefore(t,s)}(window,document,'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
                 
-                fbq('init', '${process.env.NEXT_PUBLIC_FB_PIXEL_ID}');
-                fbq('track', 'PageView');
+                fbq('init', '1068142238466336');
+                fbq('track', 'Vista del Sitio');
                 
                 window.fbq = window.fbq || function(...args) {
                   (window.fbq.queue = window.fbq.queue || []).push(args);
